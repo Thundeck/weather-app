@@ -11,8 +11,7 @@ const Nav = () => {
   const dispatch = useDispatch()
 
   const handleClick = () =>{
-    dispatch(addCity(search.trim().toLocaleLowerCase()))
-    setSearch("")
+    dispatch(addCity(search.trim().toLocaleLowerCase())).then(setSearch(""))
   }
 
   return (
