@@ -15,11 +15,11 @@ const Nav = () => {
   }
 
   return (
-    <div className='flex gap-11 items-center px-5 justify-between flex-row w-screen h-16 bg-white shadow-md shadow-slate-500 '>
+    <div className='flex md:pt-0 pt-4 pb-4 max-h-52 md:pb-0 md:h-16 gap-4 md:gap-11 items-center px-5 justify-between flex-col md:flex-row w-screen bg-white shadow-md shadow-slate-500 '>
     <Link to={r.main} className='font-bold duration-200 text-2xl hover:text-gray-200' >Weather</Link>
     <Link className='
     flex justify-center lg:w-72
-    items-center h-full w-full duration-200
+    items-center h-52 lg:h-full w-screen duration-200
     font-bold text-lg text-black hover:bg-black hover:text-white
     ' to={r.about} >About</Link>
       <div className='flex flex-row items-center justify-center'>
