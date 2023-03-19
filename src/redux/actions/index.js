@@ -11,6 +11,8 @@ export const addCity = (city) => async (dispatch) => {
       type: actions.ADD_CITY,
       payload: data,
     });
+
+    return "todo ok"
   } catch (error) {
     console.log(error);
   }

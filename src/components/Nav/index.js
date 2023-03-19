@@ -11,7 +11,7 @@ const Nav = () => {
   const dispatch = useDispatch()
 
   const handleClick = () =>{
-    dispatch(addCity(search.trim().toLocaleLowerCase())).then(setSearch(""))
+    dispatch(async() => await addCity(search.trim().toLocaleLowerCase())).then((r) =>  (r === "todo ok")&&setSearch(""))
   }
 
   return (
