@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const addCity = (city) => async (dispatch) => {
   try {
-    const { data } = await axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=4ae2636d8dfbdc3044bede63951a019b&units=metric`);
+    const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=4ae2636d8dfbdc3044bede63951a019b&units=metric`);
     
     console.log(data)
 
@@ -12,7 +12,6 @@ export const addCity = (city) => async (dispatch) => {
       payload: data,
     });
 
-    return "todo ok"
   } catch (error) {
     console.log(error);
   }
