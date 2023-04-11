@@ -1,20 +1,51 @@
-import { Routes, Route } from "react-router-dom";
-import LayOut from "./components/Layout";
-import About from "./components/About";
-import CardContainer from "./components/CardContainer";
-import r from './Routes'
-import NotFound from "./components/NotFound";
+import Landing from './components/Landing.js';
+import CardContainer from './components/CardContainer';
+import CreatePokemon from './components/Create';
+import PokemonDetails from './components/PokemonDetails';
+import Footer from './components/Footer';
+import NotFound from './components/NotFound';
+import {Route, Routes} from 'react-router-dom'
+import Nav from './components/Nav';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {getAllPokemons,getAllTypes} from "./redux/actions"
 
 function App() {
+
+  const [landing, setLanding] = useState(true)
+
+  const dispatch = useDispatch()
+
+  useEffect(()=>{
+    dispatch(getAllPokemons())
+    dispatch(getAllTypes())
+  },[dispatch])
+
+  const pokemons = useSelector(state => state.pokemons)
+  
+  const [currentPage, setCurrentPage] = useState(1)
+  const pokemonsPerPage = 12
+  const indexLastPokemon = currentPage * pokemonsPerPage // 12 > 24
+  const indexFirstPokemon = indexLastPokemon - pokemonsPerPage // 12
+  const currentPokemons = pokemons.slice(indexFirstPokemon, indexLastPokemon)
+
+  const paginado  = (numPage)=>{
+    setCurrentPage(numPage)
+  }
+
+
   return (
-    <div>
-      <Routes>
-        <Route path={r.main} element={<LayOut />} >
-          <Route index element={<CardContainer/>} />
-          <Route exact path={r.about} element={<About/>}/>
-          <Route exact path={r.notFound} element={<NotFound/>}/>
-        </Route>
-      </Routes>
+    <div >
+      {!landing ?<div>
+        <Nav setCurrentPage={setCurrentPage}/>
+        <Routes>
+          <Route exact path='/' element={<CardContainer currentPokemons={currentPokemons} pokemonsPerPage={pokemonsPerPage} paginado={paginado} setCurrentPage={setCurrentPage} currentPage={currentPage}/>}/>
+          <Route exact path='/create' element={<CreatePokemon/>}/>
+          <Route exact path='/:id' element={<PokemonDetails/>}/>
+          <Route element={<NotFound/>}/>
+        </Routes>
+        <Footer/>
+      </div> : <Landing setLanding={setLanding} /> }
     </div>
   );
 }
