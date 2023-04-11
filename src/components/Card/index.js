@@ -1,27 +1,36 @@
-import React, {useState} from 'react'
-import Types from '../types.module.css'
-import { Link } from 'react-router-dom'
+import React from 'react'
+import s from './Card.module.css'
+import {useDispatch, useSelector} from 'react-redux'
+import {deleteCity} from '../../redux/actions'
 
-function Card({name,img,types,to}) {
+const Card = ({city}) => {
 
-  const [shiny, setShiny] = useState(false) 
+  const dispatch = useDispatch()
+
+  const cities = useSelector(state => state.cities)
+
+  const handleClick = () => {
+    dispatch(deleteCity(city.sys.id, cities))
+  }
 
   return (
-    <div  className={`${Types[types[0].name]} flex justify-end items-center flex-col rounded-2xl h-96 w-72 shadow-gray-700 shadow-md relative hover:scale-105 duration-75 overflow-hidden`}>
-      <button onClick={() => setShiny(!shiny)} className={`${shiny ? "text-yellow-300" : "text-gray-500"} z-50 absolute top-4 right-4 bg-white rounded-full font-bold p-3`}><i className="fa-solid fa-star"></i></button>
-      <button className={`${shiny ? "text-rose-400" : "text-gray-500"} z-50 absolute top-4 left-4 bg-white rounded-full font-bold p-3`}><i className="fa-solid fa-heart"></i></button>
-      <Link to={to} >
-      <div className='bg-white rounded-full h-fit w-fit'>
-        <img className='h-64 w-64 hover:scale-125 duration-75' src={!shiny ? img[0] : img[1]} alt={name}/>
+    <div className={` ${s[city.weather[0].description.split(" ").join("_")]} flex relative flex-col shadow-lg shadow-gray-500 items-center pr-4 w-screen md:w-60 md:h-80`}>
+      <button onClick={handleClick} className='absolute top-0 pb-1 right-0 w-12 h-12 bg-black text-white text-2xl font-bold hover:bg-white hover:text-black duration-200' >x</button>
+      <div className='flex pl-4 items-center w-full font-semibold text-lg text-white bg-black h-12' >
+        {city.name}
       </div>
-        </Link>
-      <div className='flex justify-center items-center bg-red-600 w-full h-10' >
-          <h2 className='text-white text-xl font-extrabold capitalize'>{name}</h2>
+      <div className='flex justify-center items-center md:flex-col flex-row'>
+      <div className='flex mt-4 flex-col justify-center items-center' >
+        <div className='flex flex-col justify-center items-center h-32 '>
+        <p className='font-bold text-lg text-white' >{city.weather[0].main}</p>
+        <img className=' animate-pulse' alt={`${city.weather[0].main}`} src={`http://openweathermap.org/img/wn/${city.weather[0].icon}@2x.png`} />
+        </div >
       </div>
-      <div className='bg-zinc-700 w-full flex justify-center items-center py-1 gap-3' >
-        { types?.map((e,index) => {
-          return <div key={index} className={`${Types.pkmtype} ${Types[e.name]}`}><span>{e.name}</span></div>
-        })}
+
+      <div className='flex flex-col items-center gap-4 justify-center'>
+          <p className='text-white text-lg  md:py-1 md:px-4 py-2 px-4 font-semibold rounded-md bg-gray-900 bg-opacity-50 ' >Min Temp : {city.main.temp_min}</p>
+          <p className='text-white text-lg  md:py-1 md:px-4 py-2 px-4 font-semibold rounded-md bg-gray-900 bg-opacity-50' >Max Temp : {city.main.temp_max}</p>
+      </div>
       </div>
     </div>
   )

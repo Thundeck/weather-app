@@ -1,24 +1,19 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import Card from '../Card'
-import Paginado from "../Paginado"
+import NoCities from '../NoCities'
 
-const CardContainer = ({currentPokemons, pokemonsPerPage,paginado, setCurrentPage,currentPage}) => {
+const CardContainer = () => {
 
-  const pokemons = useSelector(state => state.pokemons)
+  const cities = useSelector(state => state.cities)
 
   return (
     <div className='mt-4 p-4 h-full w-full'>
-      <Paginado allPokes={pokemons.length} pokemonsPerPage={pokemonsPerPage} paginado={paginado} setCurrentPage={setCurrentPage} currentPage={currentPage} />
-      <div className='flex mt-4 gap-5 h-full justify-center items-center flex-row flex-wrap'>
+      <p className='text-4xl pl-4 border-black border-b-2 font-extrabold text-black'>Cities</p>
+      <div className='flex mt-4 gap-10 h-full justify-center items-center flex-row flex-wrap'>
         {
-          currentPokemons?.length ? currentPokemons?.map(e => (
-            <Card
-            key={e.id} 
-            to={`/${e.id}`}
-            name={e?.name}
-            img={e?.sprites}
-            types={e?.types} />)) : <p>no hay nada xd</p>
+          cities.length ? cities.map(e => (
+            <Card key={e.sys.id} city={e}/>)) : <NoCities/>
         }
       </div>
     </div>
